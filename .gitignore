@@ -1,0 +1,56 @@
+# Prerequisites
+*.d
+
+# images
+*.iso
+*.img
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Fortran module files
+*.mod
+*.smod
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+
+# devices
+*.dev
+*.vhd
+
+# misc
+*.hexdump
+makeout.txt
+drawingboard.txt
+make/modules.mak
+PINFO.txt
+drawingboard.txt
+buildExec
+
+# folders
+build/
+bin/
+geosfsroot/
+GEOS_DISK_ROOT/
+mnt/
