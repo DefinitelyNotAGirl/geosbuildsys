@@ -51,6 +51,7 @@ buildExec
 # folders
 build/
 bin/
+build/
 geosfsroot/
 GEOS_DISK_ROOT/
 mnt/

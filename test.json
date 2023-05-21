@@ -1,0 +1,64 @@
+{
+    "makedir" : "MAKE/",
+    "PDMO" : "../../",
+    "srctypes" : {
+        "asm" : ["asm","s",],
+        "cpp" : ["cpp","cxx",],
+        "c" : ["c",],
+    },
+    "util" : {
+        "cc" : "gcc-12",
+        "cxx" : "g++-12",
+        "as" : "gcc-12",
+        "ld" : "ld",
+    },
+    "include" : {
+        "kernel" : ["inc/","modules/klib/inc/",],
+    },
+    "args" : {
+        "kernelNoWarn" : {
+            "as" : [],
+            "c++" : ["-Wno-literal-suffix",],
+            "c" : [],
+            "ld" : [],
+        },
+        "kernel" : {
+            "as" : [],
+            "c++" : ["-O0","-nostdlib","-ffreestanding","-fno-stack-protector",],
+            "c" : [],
+            "ld" : [],
+        },
+        "dependency" : {
+            "as" : ["-M","-MD",],
+            "c++" : ["-MP","-MD",],
+            "c" : [],
+            "ld" : [],
+        },
+    },
+    "kmods" : {
+        "FUNCDIS" : {
+            "output" : "out/kernel/FUNCDIS.elf64",
+            "opath" : "build/FUNCDIS/",
+            "spath" : "modules/FUNCDIS/",
+            "lds" : "LDS/FUNCDIS.ld",
+            "inc" : ["kernel",],
+            "args" : ["kernel","kernelNoWarn",],
+        },
+        "INIT" : {
+            "output" : "out/kernel/INIT.elf64",
+            "opath" : "build/INIT/",
+            "spath" : "modules/INIT/",
+            "lds" : "LDS/INIT.ld",
+            "inc" : ["kernel",],
+            "args" : ["kernel","kernelNoWarn",],
+        },
+        "klib" : {
+            "output" : "out/kernel/klib.elf64",
+            "opath" : "build/klib/",
+            "spath" : "modules/klib/",
+            "lds" : "LDS/klib.ld",
+            "inc" : ["kernel",],
+            "args" : ["kernel","kernelNoWarn",],
+        },
+    },
+},

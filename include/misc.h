@@ -1,8 +1,8 @@
 /**
- * Created Date: Wednesday May 3rd 2023
+ * Created Date: Thursday May 4th 2023
  * Author: DefinitelyNotAGirl@github
  * -----
- * Last Modified: Wednesday May 3rd 2023 11:31:47 pm
+ * Last Modified: Thursday May 4th 2023 12:27:26 pm
  * Modified By: DefinitelyNotAGirl@github (definitelynotagirl115169@gmail.com)
  * -----
  * Copyright (c) 2023 DefinitelyNotAGirl@github
@@ -28,3 +28,16 @@
  * DEALINGS IN THE SOFTWARE.
  */
 #pragma once
+
+#include <string>
+#include <json.h>
+
+json ldconfig;
+json bconfig;
+uint64_t BUILD_NUM = 0;
+std::string BUILDER = "lilith";
+std::string DATE;
+
+void genMake();
+void genHeader_BUILD();
+void genLD();

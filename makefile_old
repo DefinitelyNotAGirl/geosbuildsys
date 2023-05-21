@@ -1,0 +1,88 @@
+#programs
+CC = gcc-13
+CXX = g++-13
+ld = ld
+as = as
+
+#target
+TARGET := buildExec
+
+#The Directories, Source, Includes, Objects, Binary and Resources
+SRCDIR      := src
+INCDIR      := include
+BUILDDIR    := build
+TARGETDIR   := ./
+SRCEXT_CXX  := cpp
+SRCEXT_S    := s
+SRCEXT_C    := c
+DEPEXT      := d
+OBJEXT      := o
+
+#Flags, Libraries and Includes
+CFLAGS      := -O3 -g
+SFLAGS      :=
+CXXFLAGS    := -O3 -g -std=c++20
+LDFLAGS		:= -L/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/lib
+LIB         := -lSystem
+INC         := -I$(INCDIR) -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/inc
+INCDEP      := -I$(INCDIR)
+
+#---------------------------------------------------------------------------------
+#DO NOT EDIT BELOW THIS LINE
+#---------------------------------------------------------------------------------
+SOURCES_CXX	:= $(shell find $(SRCDIR) -type f -name "*.$(SRCEXT_CXX)")
+SOURCES_S  	:= $(shell find $(SRCDIR) -type f -name "*.$(SRCEXT_S)")
+SOURCES_C   := $(shell find $(SRCDIR) -type f -name "*.$(SRCEXT_C)")
+OBJECTS_CXX := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES_CXX:.$(SRCEXT_CXX)=.$(OBJEXT)))
+OBJECTS_S   := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES_S:.$(SRCEXT_S)=.$(OBJEXT)))
+OBJECTS_C   := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES_C:.$(SRCEXT_C)=.$(OBJEXT)))
+
+all: $(TARGET)
+
+test:
+	$(info cmd)
+	$(info find $(SRCDIR) -type f -name "*.$(SRCEXT_CXX)")
+	$(info src)
+	$(info cpp src: $(SOURCES_CXX))
+	$(info c src: $(SOURCES_C))
+	$(info s src: $(SOURCES_S))
+	$(info obj)
+	$(info cpp obj: $(OBJECTS_CXX))
+	$(info c obj: $(OBJECTS_C))
+	$(info s obj: $(OBJECTS_S))
+
+#Link
+$(TARGET): $(OBJECTS_CXX) $(OBJECTS_S) $(OBJECTS_C)
+	$(ld) -o $(TARGETDIR)/$(TARGET) $^ $(LDFLAGS) $(LIB)
+
+#Compile
+$(BUILDDIR)/%.$(OBJEXT): $(SRCDIR)/%.$(SRCEXT_CXX)
+	@mkdir -p $(dir $@)
+	$(CXX) $(CXXFLAGS) $(INC) -c -o $@ $<
+	@$(CXX) $(CXXFLAGS) $(INCDEP) -MM $(SRCDIR)/$*.$(SRCEXT_CXX) > $(BUILDDIR)/$*.$(DEPEXT)
+	@cp -f $(BUILDDIR)/$*.$(DEPEXT) $(BUILDDIR)/$*.$(DEPEXT).tmp
+	@sed -e 's|.*:|$(BUILDDIR)/$*.$(OBJEXT):|' < $(BUILDDIR)/$*.$(DEPEXT).tmp > $(BUILDDIR)/$*.$(DEPEXT)
+	@sed -e 's/.*://' -e 's/\\$$//' < $(BUILDDIR)/$*.$(DEPEXT).tmp | fmt -1 | sed -e 's/^ *//' -e 's/$$/:/' >> $(BUILDDIR)/$*.$(DEPEXT)
+	@rm -f $(BUILDDIR)/$*.$(DEPEXT).tmp
+$(BUILDDIR)/%.$(OBJEXT): $(SRCDIR)/%.$(SRCEXT_C)
+	@mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) $(INC) -c -o $@ $<
+	@$(CC) $(CFLAGS) $(INCDEP) -MM $(SRCDIR)/$*.$(SRCEXT_C) > $(BUILDDIR)/$*.$(DEPEXT)
+	@cp -f $(BUILDDIR)/$*.$(DEPEXT) $(BUILDDIR)/$*.$(DEPEXT).tmp
+	@sed -e 's|.*:|$(BUILDDIR)/$*.$(OBJEXT):|' < $(BUILDDIR)/$*.$(DEPEXT).tmp > $(BUILDDIR)/$*.$(DEPEXT)
+	@sed -e 's/.*://' -e 's/\\$$//' < $(BUILDDIR)/$*.$(DEPEXT).tmp | fmt -1 | sed -e 's/^ *//' -e 's/$$/:/' >> $(BUILDDIR)/$*.$(DEPEXT)
+	@rm -f $(BUILDDIR)/$*.$(DEPEXT).tmp
+$(BUILDDIR)/%.$(OBJEXT): $(SRCDIR)/%.$(SRCEXT_S)
+	@mkdir -p $(dir $@)
+	$(as) $(SFLAGS) $(INC) -c -o $@ $<
+	@$(as) $(SFLAGS) $(INCDEP) -MM $(SRCDIR)/$*.$(SRCEXT_S) > $(BUILDDIR)/$*.$(DEPEXT)
+	@cp -f $(BUILDDIR)/$*.$(DEPEXT) $(BUILDDIR)/$*.$(DEPEXT).tmp
+	@sed -e 's|.*:|$(BUILDDIR)/$*.$(OBJEXT):|' < $(BUILDDIR)/$*.$(DEPEXT).tmp > $(BUILDDIR)/$*.$(DEPEXT)
+	@sed -e 's/.*://' -e 's/\\$$//' < $(BUILDDIR)/$*.$(DEPEXT).tmp | fmt -1 | sed -e 's/^ *//' -e 's/$$/:/' >> $(BUILDDIR)/$*.$(DEPEXT)
+	@rm -f $(BUILDDIR)/$*.$(DEPEXT).tmp
+
+clean:
+	@$(RM) -rf $(BUILDDIR)
+
+#Pull in dependency info for *existing* .o files
+-include $(OBJECTS:.$(OBJEXT)=.$(DEPEXT))
