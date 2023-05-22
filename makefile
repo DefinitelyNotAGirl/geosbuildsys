@@ -2,8 +2,8 @@
 # Created Date: Thursday May 4th 2023
 # Author: DefinitelyNotAGirl@github
 # -----
-# Last Modified: Thursday May 4th 2023 1:48:32 am
-# Modified By: DefinitelyNotAGirl@github (definitelynotagirl115169@gmail.com)
+# Last Modified: Monday May 22nd 2023 4:03:46 am
+# Modified By: DefinitelyNotAGirl@github (definitelynotagirl115199@gmail.com)
 # -----
 # Copyright (c) 2023 DefinitelyNotAGirl@github
 # 
@@ -28,7 +28,7 @@
 # DEALINGS IN THE SOFTWARE.
 #
 
-ARGS := -Wno-c++11-compat-deprecated-writable-strings -Wno-writable-strings
+ARGS := -fmax-errors=3
 all:
 	c++ -std=c++20 $(ARGS) src/configure.cpp -o configure -Iinclude
 	c++ -std=c++20 $(ARGS) src/createModule.cpp -o createModule -Iinclude

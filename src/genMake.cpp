@@ -2,8 +2,8 @@
  * Created Date: Thursday May 11th 2023
  * Author: DefinitelyNotAGirl@github
  * -----
- * Last Modified: Thursday May 11th 2023 12:41:31 am
- * Modified By: DefinitelyNotAGirl@github (definitelynotagirl115169@gmail.com)
+ * Last Modified: Monday May 22nd 2023 4:03:46 am
+ * Modified By: DefinitelyNotAGirl@github (definitelynotagirl115199@gmail.com)
  * -----
  * Copyright (c) 2023 DefinitelyNotAGirl@github
  * 
@@ -47,8 +47,8 @@ namespace make
         //
         //generate makefile for external build
         //
-        incMake.push_back(std::string(bconfig["makedir"])+mod.data+".module.mak");
-        file Fexternal(std::string(bconfig["makedir"])+mod.data+".module.mak");
+        incMake.push_back(std::string(::bconfig["makedir"])+mod.data+".module.mak");
+        file Fexternal(std::string(::bconfig["makedir"])+mod.data+".module.mak");
 
         std::string fileCollector = "";
         std::string include = "";
@@ -63,7 +63,7 @@ namespace make
         std::string ARGS_C = "";
         for(json& I : mod["args"])
         {
-            json& args = bconfig["args"][I];
+            json& args = ::bconfig["args"][I];
             for(json& arg : args["as"])
                 ARGS_ASM+=' '+std::string(arg);
             for(json& arg : args["c++"])
@@ -76,7 +76,7 @@ namespace make
         //get include args
         for(json& I : mod["inc"])
         {
-            for(json& inc : bconfig["include"][I])
+            for(json& inc : ::bconfig["include"][I])
             {
                 ARGS_CXX+=" -I"+std::string(inc);
                 ARGS_C+=" -I"+std::string(inc);
@@ -87,7 +87,7 @@ namespace make
         //generate file collector
         //
         std::vector<std::string> objlists;
-        for(json& stype : bconfig["srctypes"])
+        for(json& stype : ::bconfig["srctypes"])
         {
             for(json& ext : stype)
             {
@@ -130,10 +130,10 @@ namespace make
         //
         //generate makefile for internal build
         //
-        file Finternal(std::string(mod["spath"])+"makefile");
+        file Finternal(std::string(((json&)mod)["spath"])+"makefile");
         std::string internal = autocrmk;
-        internal+="all: \n\t$(MAKE) -C "+std::string(bconfig["PDMO"])+" m-"+mod.data+'\n';
-        internal+="clean: \n\t$(MAKE) -C "+std::string(bconfig["PDMO"])+" m-"+mod.data+"-clean\n";
+        internal+="all: \n\t$(MAKE) -C "+std::string(::bconfig["PDMO"])+" m-"+mod.data+'\n';
+        internal+="clean: \n\t$(MAKE) -C "+std::string(::bconfig["PDMO"])+" m-"+mod.data+"-clean\n";
         Finternal.clear();
         Finternal << internal;
 
@@ -144,11 +144,11 @@ namespace make
 
     void genMakeMods()
     {
-        incMake.push_back(std::string(bconfig["makedir"])+"modules.mak");
-        file GMMF(std::string(bconfig["makedir"])+"modules.mak");
+        incMake.push_back(std::string(::bconfig["makedir"])+"modules.mak");
+        file GMMF(std::string(::bconfig["makedir"])+"modules.mak");
         std::string gmmfc = autocrmk;
         gmmfc+="m-all:";
-        for(json& I : bconfig["kmods"])
+        for(json& I : ::bconfig["kmods"])
         {
             gmmfc+=" m-"+I.data;
             std::cout << "\t\t\t" << I.data << "..." << std::endl;
@@ -163,7 +163,7 @@ namespace make
 
     void genMakeInc()
     {
-        file minc(std::string(bconfig["makedir"])+"include.mak");
+        file minc(std::string(::bconfig["makedir"])+"include.mak");
         std::string content = autocrmk;
         for(std::string I : incMake)
             content+="include "+I+"\n";

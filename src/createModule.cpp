@@ -2,8 +2,8 @@
  * Created Date: Thursday May 11th 2023
  * Author: DefinitelyNotAGirl@github
  * -----
- * Last Modified: Thursday May 11th 2023 11:00:27 pm
- * Modified By: DefinitelyNotAGirl@github (definitelynotagirl115169@gmail.com)
+ * Last Modified: Monday May 22nd 2023 4:03:46 am
+ * Modified By: DefinitelyNotAGirl@github (definitelynotagirl115199@gmail.com)
  * -----
  * Copyright (c) 2023 DefinitelyNotAGirl@github
  * 
@@ -27,6 +27,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+
+#ifdef __linux__
+#include <cstring>
+#endif
+
 #include <iostream>
 #include <string>
 #include <vector>

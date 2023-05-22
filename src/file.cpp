@@ -2,8 +2,8 @@
  * Created Date: Thursday May 4th 2023
  * Author: DefinitelyNotAGirl@github
  * -----
- * Last Modified: Thursday May 4th 2023 11:09:34 am
- * Modified By: DefinitelyNotAGirl@github (definitelynotagirl115169@gmail.com)
+ * Last Modified: Monday May 22nd 2023 4:03:46 am
+ * Modified By: DefinitelyNotAGirl@github (definitelynotagirl115199@gmail.com)
  * -----
  * Copyright (c) 2023 DefinitelyNotAGirl@github
  * 
@@ -70,6 +70,11 @@ uint64_t file::operator>>(char** buffer)
 void file::operator<<(std::string content_)
 {
     FILE* f = fopen(this->path.c_str(), "r");
+	if(f == NULL)
+	{
+		std::cout << "fopen call failed" << std::endl;
+		std::cout << "path: " << this->path.c_str() << std::endl;
+	}
 
     // Determine file size
     fseek(f, 0, SEEK_END);

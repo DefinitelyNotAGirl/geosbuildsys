@@ -2,8 +2,8 @@
  * Created Date: Wednesday May 3rd 2023
  * Author: DefinitelyNotAGirl@github
  * -----
- * Last Modified: Wednesday May 3rd 2023 11:31:47 pm
- * Modified By: DefinitelyNotAGirl@github (definitelynotagirl115169@gmail.com)
+ * Last Modified: Monday May 22nd 2023 4:03:46 am
+ * Modified By: DefinitelyNotAGirl@github (definitelynotagirl115199@gmail.com)
  * -----
  * Copyright (c) 2023 DefinitelyNotAGirl@github
  * 
@@ -27,6 +27,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+
+#ifdef __linux__
+#include <cstring>
+#endif
+
 #include <iostream>
 #include <chrono>
 #include <iomanip>
@@ -39,6 +44,14 @@
 #include <file.h>
 #include <json.h>
 #include <misc.h>
+
+//fetch implementation
+#include "genMake.cpp"
+#include "genLD.cpp"
+#include "genhead.cpp"
+#include "file.cpp"
+#include "json.cpp"
+#include "error.cpp"
 
 int main(int argc,char** argv)
 {
@@ -83,11 +96,3 @@ int main(int argc,char** argv)
     std::cout << "GEOS build finished" << std::endl;
     return 0;
 }
-
-//fetch implementation
-#include "genMake.cpp"
-#include "genLD.cpp"
-#include "genhead.cpp"
-#include "file.cpp"
-#include "json.cpp"
-#include "error.cpp"

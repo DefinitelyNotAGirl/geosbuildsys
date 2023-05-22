@@ -56,8 +56,8 @@ public:
 
     void save(std::string File);
 
-    json& operator[](uint64_t index);
     json& operator[](std::string index);
+	json& operator[](uint64_t index);
 
     std::vector<json>::iterator end();
     std::vector<json>::iterator begin();
