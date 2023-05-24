@@ -2,8 +2,8 @@
  * Created Date: Thursday May 11th 2023
  * Author: DefinitelyNotAGirl@github
  * -----
- * Last Modified: Monday May 22nd 2023 4:03:46 am
- * Modified By: DefinitelyNotAGirl@github (definitelynotagirl115199@gmail.com)
+ * Last Modified: Tuesday May 23rd 2023 6:21:46 am
+ * Modified By: DefinitelyNotAGirl@github (definitelynotagirl115169@gmail.com)
  * -----
  * Copyright (c) 2023 DefinitelyNotAGirl@github
  * 
@@ -179,6 +179,21 @@ namespace make
         AS = bconfig["util"]["as"];
         LD = bconfig["util"]["ld"];
     }
+
+    void genMakeModInc()
+    {
+        incMake.push_back(std::string(::bconfig["makedir"])+"modinclude.mak");
+        file modinc(std::string(::bconfig["makedir"])+"modinclude.mak");
+
+        std::string modinccontent = autocrmk;
+        for(json& I : ::bconfig["kmods"])
+        {
+            modinccontent+=std::string(::bconfig["incdir"])+I.data+": "+"modules/"+I.data+"/inc/"+I.data+"\n\t cp $@ $<\n";
+        }
+
+        modinc.clear();
+        modinc << modinccontent;
+    }
 }
 
 void genMake()
@@ -187,6 +202,8 @@ void genMake()
     make::genMakeUtil();
     std::cout << "\t\tGenerating Module related make files..." << std::endl;
     make::genMakeMods();
+    std::cout << "\t\tGenerating modinclude.mak..." << std::endl;
+    make::genMakeModInc();
     std::cout << "\t\tGenerating include.mak..." << std::endl;
     make::genMakeInc();
 }
