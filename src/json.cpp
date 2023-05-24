@@ -2,8 +2,8 @@
  * Created Date: Thursday May 4th 2023
  * Author: DefinitelyNotAGirl@github
  * -----
- * Last Modified: Monday May 22nd 2023 4:03:46 am
- * Modified By: DefinitelyNotAGirl@github (definitelynotagirl115199@gmail.com)
+ * Last Modified: Tuesday May 23rd 2023 6:21:46 am
+ * Modified By: DefinitelyNotAGirl@github (definitelynotagirl115169@gmail.com)
  * -----
  * Copyright (c) 2023 DefinitelyNotAGirl@github
  * 
@@ -383,6 +383,22 @@ json::operator std::string()
         return this->data;
     std::cerr << "cant convert list json object \"" << this->data << "\" into string" << std::endl;
         exit(-4);
+}
+
+bool json::hasEntry(std::string name)
+{
+    if(this->mode != jsonmode::LIST)
+    {
+        std::cerr << "cant use hasEntry function on non-list json object \"" << this->data << "\"" << std::endl;
+        exit(-2);
+    }
+
+    for(json& I : this->list)
+    {
+        if(I.data == name)
+            return true;
+    }
+    return false;
 }
 
 void json::operator<<(json j)

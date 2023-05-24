@@ -1,8 +1,8 @@
-/*
- * Created Date: Thursday May 4th 2023
+/**
+ * Created Date: Wednesday May 24th 2023
  * Author: DefinitelyNotAGirl@github
  * -----
- * Last Modified: Thursday May 4th 2023 1:50:48 am
+ * Last Modified: Wednesday May 24th 2023 10:26:53 pm
  * Modified By: DefinitelyNotAGirl@github (definitelynotagirl115169@gmail.com)
  * -----
  * Copyright (c) 2023 DefinitelyNotAGirl@github
@@ -29,51 +29,24 @@
  */
 #pragma once
 
-#include <string>
-#include <vector>
-#include <iostream>
-#include <sstream>
+//
+// arch
+//
+#ifdef __aarch64__
+    #define GS_ARCH "aarch64"
+#elif defined(__x86_64__)
+    #define GS_ARCH "x86_64"
+#else
+    #error "Unsupported architecture"
+#endif
 
-enum class jsonmode
-{
-    UNINITIALIZED,LIST,SINGLE,EMPTY
-};
-
-class json
-{
-private:
-    void saveSub(std::stringstream& out,int indent);
-public:
-    json();
-    json(std::string n);
-    json(std::string name,std::string value);
-    json(std::string name,std::vector<std::string> values);
-    json(std::string name,std::vector<json> values);
-    std::vector<json> list;//filled on LIST mode
-    std::string strv;//filled on SINGLE mode
-    std::string data;//filled on all modes
-    jsonmode mode = jsonmode::UNINITIALIZED;
-
-    void save(std::string File);
-
-    bool hasEntry(std::string name);
-
-    json& operator[](std::string index);
-	json& operator[](uint64_t index);
-
-    std::vector<json>::iterator end();
-    std::vector<json>::iterator begin();
-
-    operator std::string();
-
-    void operator<<(json j);
-    void operator<<(std::string v);
-    void operator<<(uint64_t v);
-    void operator<<(int64_t v);
-    void operator<<(double v);
-    void operator<<(float v);
-};
-
-void jsonPrint(json& d,uint64_t indent = 0);
-json jsonLoad(std::string path);
-void jsonLoadTxt(json* output, char** content);
+//
+// OS
+//
+#ifdef __APPLE__
+    #define GS_OS "OSX"
+#elif defined(__linux__)
+    #define GS_OS "gnu_linux"
+#else
+    #error "Unsupported OS"
+#endif

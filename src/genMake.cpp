@@ -2,7 +2,7 @@
  * Created Date: Thursday May 11th 2023
  * Author: DefinitelyNotAGirl@github
  * -----
- * Last Modified: Tuesday May 23rd 2023 6:21:46 am
+ * Last Modified: Wednesday May 24th 2023 10:32:26 am
  * Modified By: DefinitelyNotAGirl@github (definitelynotagirl115169@gmail.com)
  * -----
  * Copyright (c) 2023 DefinitelyNotAGirl@github
@@ -32,6 +32,7 @@
 #include <json.h>
 #include <misc.h>
 #include <file.h>
+#include <gSystem.h>
 
 namespace make
 {
@@ -83,6 +84,24 @@ namespace make
             }
         }
 
+        std::string gsystem = std::string(GS_ARCH)+"-"+std::string(GS_OS);
+        if(::bconfig["args"]["system"].hasEntry(gsystem))
+        {
+            json& args = ::bconfig["args"]["system"][gsystem];
+            for(json& arg : args["as"])
+                ARGS_ASM+=' '+std::string(arg);
+            for(json& arg : args["c++"])
+                ARGS_CXX+=' '+std::string(arg);
+            for(json& arg : args["ld"])
+                ARGS_LD+=' '+std::string(arg);
+            for(json& arg : args["c"])
+                ARGS_C+=' '+std::string(arg);
+        }
+        else
+        {
+            std::cout << "unsupport system: " << GS_ARCH-GS_OS << std::endl;
+            exit(-3);
+        }
         //
         //generate file collector
         //
