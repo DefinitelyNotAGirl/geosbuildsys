@@ -2,7 +2,7 @@
  * Created Date: Thursday May 11th 2023
  * Author: DefinitelyNotAGirl@github
  * -----
- * Last Modified: Wednesday May 24th 2023 10:32:26 am
+ * Last Modified: Wednesday May 24th 2023 11:14:32 pm
  * Modified By: DefinitelyNotAGirl@github (definitelynotagirl115169@gmail.com)
  * -----
  * Copyright (c) 2023 DefinitelyNotAGirl@github
@@ -83,6 +83,8 @@ namespace make
                 ARGS_C+=" -I"+std::string(inc);
             }
         }
+        ARGS_CXX+=" -Imodules/"+mod.data+"/inc";
+        ARGS_C+=" -Imodules/"+mod.data+"/inc";
 
         std::string gsystem = std::string(GS_ARCH)+"-"+std::string(GS_OS);
         if(::bconfig["args"]["system"].hasEntry(gsystem))
