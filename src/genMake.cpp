@@ -2,7 +2,7 @@
  * Created Date: Thursday May 11th 2023
  * Author: DefinitelyNotAGirl@github
  * -----
- * Last Modified: Wednesday May 24th 2023 11:14:32 pm
+ * Last Modified: Thursday May 25th 2023 11:06:54 am
  * Modified By: DefinitelyNotAGirl@github (definitelynotagirl115169@gmail.com)
  * -----
  * Copyright (c) 2023 DefinitelyNotAGirl@github
@@ -121,19 +121,19 @@ namespace make
 
                 rules+=builddir+"%.o: "+srcdir+"%."+std::string(ext)+'\n';
                 if(stype.data == "cpp")
-                    rules+='\t'+CXX+ARGS_CXX+" -c -o $@ $<\n";
+                    rules+="\t@"+CXX+ARGS_CXX+" -c -o $@ $<\n\t$(info  \tC++\t$<)\n";
                 else if(stype.data == "asm")
-                    rules+='\t'+AS+ARGS_ASM+" -c -o $@ $<\n";
+                    rules+="\t@"+AS+ARGS_ASM+" -c -o $@ $<\n\t$(info  \tAS\t$<)\n";
                 else if(stype.data == "c")
-                    rules+='\t'+CC+ARGS_C+" -c -o $@ $<\n";
+                    rules+="\t@"+CC+ARGS_C+" -c -o $@ $<\n\t$(info  \tCC\t$<)\n";
             }
         }
         //
         //generate clean rule
         //
         rules+="m-"+mod.data+"-clean:\n";
-        rules+="\trm -r "+builddir+"*.o\n";
-        rules+="\trm -r "+builddir+"*.d\n";
+        rules+="\t@-rm -r "+builddir+"*.o\n\t$(info  \tDELETE\t"+builddir+"*.o)\n";
+        rules+="\t@-rm -r "+builddir+"*.d\n\t$(info  \tDELETE\t"+builddir+"*.d)\n";
         //
         //generate module build rule
         //
@@ -212,7 +212,7 @@ namespace make
         {
             if(I.data == "klib")
                 continue; //skip this for klib (modules/klib/inc is part of the include dirs)
-            modinccontent+=std::string(::bconfig["incdir"])+I.data+": "+"modules/"+I.data+"/inc/"+I.data+".h\n\t cp $< $@\n";
+            modinccontent+=std::string(::bconfig["incdir"])+I.data+": "+"modules/"+I.data+"/inc/"+I.data+".h\n\t cp $< $@\n\t$(info  \tCOPY\t$<)\n";
             mincat+=std::string(::bconfig["incdir"])+I.data+" ";
         }
         mincat+="\n";
