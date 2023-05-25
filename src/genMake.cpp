@@ -2,7 +2,7 @@
  * Created Date: Thursday May 11th 2023
  * Author: DefinitelyNotAGirl@github
  * -----
- * Last Modified: Thursday May 25th 2023 11:06:54 am
+ * Last Modified: Thursday May 25th 2023 11:34:29 am
  * Modified By: DefinitelyNotAGirl@github (definitelynotagirl115169@gmail.com)
  * -----
  * Copyright (c) 2023 DefinitelyNotAGirl@github
@@ -42,6 +42,7 @@ namespace make
     std::string CXX;
     std::string AS;
     std::string LD;
+    std::string KLIB_OBJS;
 
     void genMakeMod(json& mod)
     {
@@ -139,10 +140,14 @@ namespace make
         //
         std::string OUTPUT = mod["output"];
         rules+="m-"+mod.data+": "+OUTPUT+"\n";
-        rules+=OUTPUT+": ";
+        std::string OBJS;
         for(std::string I : objlists)
-            rules+=" $("+I+')';
-        rules+='\n';
+            OBJS+=" $("+I+')';
+        rules+=OUTPUT+": "+OBJS+"\n\t";
+        rules+=LD+ARGS_LD+" -T "+std::string(::bconfig["kmods"][mod.data]["lds"])+" "+OBJS+" "+KLIB_OBJS+" -o "+OUTPUT+"\n";
+
+        if(mod.data == "klib")
+            KLIB_OBJS=OBJS;
 
         //write to file
         Fexternal.clear();
