@@ -206,11 +206,17 @@ namespace make
         incMake.push_back(std::string(::bconfig["makedir"])+"modinclude.mak");
         file modinc(std::string(::bconfig["makedir"])+"modinclude.mak");
 
+        std::string mincat = "modinc-all: ";
         std::string modinccontent = autocrmk;
         for(json& I : ::bconfig["kmods"])
         {
-            modinccontent+=std::string(::bconfig["incdir"])+I.data+": "+"modules/"+I.data+"/inc/"+I.data+"\n\t cp $@ $<\n";
+            if(I.data == "klib")
+                continue; //skip this for klib (modules/klib/inc is part of the include dirs)
+            modinccontent+=std::string(::bconfig["incdir"])+I.data+": "+"modules/"+I.data+"/inc/"+I.data+".h\n\t cp $< $@\n";
+            mincat+=std::string(::bconfig["incdir"])+I.data+" ";
         }
+        mincat+="\n";
+        modinccontent+=mincat;
 
         modinc.clear();
         modinc << modinccontent;
