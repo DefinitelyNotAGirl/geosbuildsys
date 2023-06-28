@@ -2,7 +2,7 @@
  * Created Date: Thursday May 11th 2023
  * Author: DefinitelyNotAGirl@github
  * -----
- * Last Modified: Thursday May 25th 2023 11:34:29 am
+ * Last Modified: Thursday May 25th 2023 11:20:16 pm
  * Modified By: DefinitelyNotAGirl@github (definitelynotagirl115169@gmail.com)
  * -----
  * Copyright (c) 2023 DefinitelyNotAGirl@github
@@ -42,6 +42,7 @@ namespace make
     std::string CXX;
     std::string AS;
     std::string LD;
+    std::string OBJCOPY;
     std::string KLIB_OBJS;
 
     void genMakeMod(json& mod)
@@ -122,7 +123,7 @@ namespace make
 
                 rules+=builddir+"%.o: "+srcdir+"%."+std::string(ext)+'\n';
                 if(stype.data == "cpp")
-                    rules+="\t@"+CXX+ARGS_CXX+" -c -o $@ $<\n\t$(info  \tC++\t$<)\n";
+                    rules+="\t@"+CXX+ARGS_CXX+" -c -o $@ $<\n\t$(info \tC++\t$<)\n";
                 else if(stype.data == "asm")
                     rules+="\t@"+AS+ARGS_ASM+" -c -o $@ $<\n\t$(info  \tAS\t$<)\n";
                 else if(stype.data == "c")
@@ -143,8 +144,19 @@ namespace make
         std::string OBJS;
         for(std::string I : objlists)
             OBJS+=" $("+I+')';
-        rules+=OUTPUT+": "+OBJS+"\n\t";
+        rules+=OUTPUT+": "+OBJS+"\n\t@";
         rules+=LD+ARGS_LD+" -T "+std::string(::bconfig["kmods"][mod.data]["lds"])+" "+OBJS+" "+KLIB_OBJS+" -o "+OUTPUT+"\n";
+        rules+="\t$(info  \tLD\t$@)\n\t@";
+        if(mod.data != "klib")
+        {
+            //remove klib sections
+            rules+=OBJCOPY+" "+OUTPUT;
+            rules+=" --remove-section text_klib";
+            rules+=" --remove-section rodata_klib";
+            rules+=" --remove-section data_klib";
+            rules+=" --remove-section bss_klib";
+            rules+="\n\t$(info  \tOBJCOPY\t$@)\n";
+        }
 
         if(mod.data == "klib")
             KLIB_OBJS=OBJS;
@@ -204,6 +216,7 @@ namespace make
         CXX = bconfig["util"]["cxx"];
         AS = bconfig["util"]["as"];
         LD = bconfig["util"]["ld"];
+        OBJCOPY = bconfig["util"]["objcopy"];
     }
 
     void genMakeModInc()
