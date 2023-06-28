@@ -38,7 +38,7 @@ void linker::script::write(std::string File)
     f.clear();
     f << autocr;
     if(this->format == oformat::BINARY)
-        f << "OUTPUT_FORMAT(\"binary\")\n";
+        f << "OUTPUT_FORMAT(\""+std::string(::ldconfig["oformat"])+"\")\n";
     
     f << "ENTRY("+this->entry+")\n";
     f << "SECTIONS {\n";
@@ -77,25 +77,25 @@ static std::vector<linker::section> getMMS(json& mod)
     //text
     linker::section text;
     text.name = prefix+"text"+suffix;
-    text.input.push_back(opath+"*.o (.text)");
+    text.input.push_back(opath+"*.o (.text*)");
     text.start = ms["text"];
 
     //data
     linker::section data;
     data.name = prefix+"data"+suffix;
-    data.input.push_back(opath+"*.o (.data)");
+    data.input.push_back(opath+"*.o (.data*)");
     data.start = ms["data"];
 
     //rodata
     linker::section rodata;
     rodata.name = prefix+"rodata"+suffix;
-    rodata.input.push_back(opath+"*.o (.rodata)");
+    rodata.input.push_back(opath+"*.o (.rodata*)");
     rodata.start = ms["rodata"];
 
     //bss
     linker::section bss;
     bss.name = prefix+"bss"+suffix;
-    bss.input.push_back(opath+"*.o (.bss)");
+    bss.input.push_back(opath+"*.o (.bss*)");
     bss.start = ms["bss"];
 
     res.push_back(text);
