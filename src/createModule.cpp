@@ -29,6 +29,7 @@
  */
 
 #ifdef __linux__
+#include <cstdint>
 #include <cstring>
 #endif
 

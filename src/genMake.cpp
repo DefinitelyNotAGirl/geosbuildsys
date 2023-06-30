@@ -2,8 +2,8 @@
  * Created Date: Thursday May 11th 2023
  * Author: DefinitelyNotAGirl@github
  * -----
- * Last Modified: Thursday May 25th 2023 11:20:16 pm
- * Modified By: DefinitelyNotAGirl@github (definitelynotagirl115169@gmail.com)
+ * Last Modified: Wednesday June 28th 2023 10:30:05 pm
+ * Modified By: Lilith (definitelynotagirl115169@gmail.com)
  * -----
  * Copyright (c) 2023 DefinitelyNotAGirl@github
  * 
@@ -50,8 +50,8 @@ namespace make
         //
         //generate makefile for external build
         //
-        incMake.push_back(std::string(::bconfig["makedir"])+mod.data+".module.mak");
-        file Fexternal(std::string(::bconfig["makedir"])+mod.data+".module.mak");
+        incMake.push_back(std::string(::bconfig["makedir"])+mod.data+".module.make");
+        file Fexternal(std::string(::bconfig["makedir"])+mod.data+".module.make");
 
         std::string fileCollector = "";
         std::string include = "";
@@ -182,8 +182,8 @@ namespace make
 
     void genMakeMods()
     {
-        incMake.push_back(std::string(::bconfig["makedir"])+"modules.mak");
-        file GMMF(std::string(::bconfig["makedir"])+"modules.mak");
+        incMake.push_back(std::string(::bconfig["makedir"])+"modules.make");
+        file GMMF(std::string(::bconfig["makedir"])+"modules.make");
         std::string gmmfc = autocrmk;
         gmmfc+="m-all:";
         for(json& I : ::bconfig["kmods"])
@@ -201,7 +201,7 @@ namespace make
 
     void genMakeInc()
     {
-        file minc(std::string(::bconfig["makedir"])+"include.mak");
+        file minc(std::string(::bconfig["makedir"])+"include.make");
         std::string content = autocrmk;
         for(std::string I : incMake)
             content+="include "+I+"\n";
@@ -221,8 +221,8 @@ namespace make
 
     void genMakeModInc()
     {
-        incMake.push_back(std::string(::bconfig["makedir"])+"modinclude.mak");
-        file modinc(std::string(::bconfig["makedir"])+"modinclude.mak");
+        incMake.push_back(std::string(::bconfig["makedir"])+"modinclude.make");
+        file modinc(std::string(::bconfig["makedir"])+"modinclude.make");
 
         std::string mincat = "modinc-all: ";
         std::string modinccontent = autocrmk;
@@ -247,8 +247,8 @@ void genMake()
     make::genMakeUtil();
     std::cout << "\t\tGenerating Module related make files..." << std::endl;
     make::genMakeMods();
-    std::cout << "\t\tGenerating modinclude.mak..." << std::endl;
+    std::cout << "\t\tGenerating modinclude.make..." << std::endl;
     make::genMakeModInc();
-    std::cout << "\t\tGenerating include.mak..." << std::endl;
+    std::cout << "\t\tGenerating include.make..." << std::endl;
     make::genMakeInc();
 }
